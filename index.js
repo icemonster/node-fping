@@ -1,13 +1,14 @@
-var exec = require('child_process').exec;
+var execFile = require('child_process').execFile;
 
 module.exports.subnet = function(network, callback) {
   var args = [
+    '-ss',
     '-r0',
     '-aqg',
     network
   ];
 
-  exec('/usr/bin/fping ss '+args.join(' '), function(err, stdout, stderr) {
+  execFile('/usr/bin/fping', args, function(err, stdout, stderr) {
     if ( err.code == 1 ) err = null;
     var hosts = stdout.toString().trim().split("\n");
     callback && callback(err, hosts);
